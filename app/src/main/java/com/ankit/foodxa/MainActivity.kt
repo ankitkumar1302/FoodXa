@@ -2,17 +2,35 @@ package com.ankit.foodxa
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -20,14 +38,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
-import com.ankit.foodxa.ui.theme.*
+import com.ankit.foodxa.ui.theme.AllTransactionsScreen
+import com.ankit.foodxa.ui.theme.CartScreen
+import com.ankit.foodxa.ui.theme.FoodXaHomeScreen
+import com.ankit.foodxa.ui.theme.FoodXaLoginScreen
+import com.ankit.foodxa.ui.theme.FoodXaSignUpScreenFunctional
+import com.ankit.foodxa.ui.theme.FoodXaTheme
+import com.ankit.foodxa.ui.theme.MyCardScreen
+import com.ankit.foodxa.ui.theme.PopularFoodScreen
+import com.ankit.foodxa.ui.theme.ProfileScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        
+
         setContent {
             FoodXaTheme {
                 Surface(
@@ -36,8 +62,21 @@ class MainActivity : ComponentActivity() {
                 ) {
                     var currentScreen by remember { mutableStateOf("auth") }
                     var showLogin by remember { mutableStateOf(false) }
-                    var selectedTab by remember { mutableStateOf(0) }
-                    
+                    var selectedTab by remember { mutableIntStateOf(0) }
+
+                    // Handle back press
+                    BackHandler(enabled = true) {
+                        when {
+                            currentScreen == "main" && selectedTab != 0 -> {
+                                selectedTab = 0 // Return to home screen
+                            }
+
+                            currentScreen == "main" && selectedTab == 0 -> {
+                                finish() // Exit app if on home screen
+                            }
+                        }
+                    }
+
                     Box(modifier = Modifier.fillMaxSize()) {
                         when (currentScreen) {
                             "auth" -> {
@@ -53,6 +92,7 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
                             }
+
                             "main" -> {
                                 Box(modifier = Modifier.fillMaxSize()) {
                                     // Status bar scrim for all screens
@@ -79,20 +119,25 @@ class MainActivity : ComponentActivity() {
                                                 onNavigateToPopularFood = { selectedTab = 1 },
                                                 onNavigateToMyCard = { selectedTab = 2 }
                                             )
+
                                             1 -> PopularFoodScreen(
                                                 onNavigateBack = { selectedTab = 0 }
                                             )
+
                                             2 -> CartScreen(
                                                 onNavigateBack = { selectedTab = 0 },
                                                 onCheckout = { selectedTab = 3 }
                                             )
+
                                             3 -> MyCardScreen(
                                                 onNavigateBack = { selectedTab = 2 },
                                                 onViewAllTransactions = { selectedTab = 4 }
                                             )
+
                                             4 -> AllTransactionsScreen(
                                                 onNavigateBack = { selectedTab = 3 }
                                             )
+
                                             5 -> ProfileScreen(
                                                 onNavigateBack = { selectedTab = 0 },
                                                 onLogout = { currentScreen = "auth" }
@@ -102,7 +147,7 @@ class MainActivity : ComponentActivity() {
 
                                     // Bottom Navigation Bar with proper padding and animation
                                     AnimatedVisibility(
-                                        visible = selectedTab in listOf(0, 5), // Show only on home and profile screens
+                                        visible = selectedTab in listOf(0, 5),
                                         modifier = Modifier.align(Alignment.BottomCenter),
                                         enter = slideInVertically { it },
                                         exit = slideOutVertically { it }

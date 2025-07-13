@@ -70,7 +70,10 @@ import coil.compose.AsyncImage
 @Composable
 fun ProfileScreen(
     onNavigateBack: () -> Unit = {},
-    onLogout: () -> Unit = {}
+    onLogout: () -> Unit = {},
+    onNotifications: () -> Unit = {},
+    onSettings: () -> Unit = {},
+    onOrderTracking: () -> Unit = {}
 ) {
     var isLoading by remember { mutableStateOf(true) }
 
@@ -192,7 +195,7 @@ fun ProfileScreen(
                                 SettingsItem(
                                     "Notifications",
                                     Icons.Outlined.Notifications,
-                                    onClick = { /* Navigate to notifications */ }
+                                    onClick = onNotifications
                                 )
                             )
                         )
@@ -229,6 +232,16 @@ fun ProfileScreen(
                         SettingsSection(
                             title = "Support",
                             items = listOf(
+                                SettingsItem(
+                                    "Order Tracking",
+                                    Icons.Outlined.LocationOn,
+                                    onClick = onOrderTracking
+                                ),
+                                SettingsItem(
+                                    "Settings",
+                                    Icons.Outlined.Person,
+                                    onClick = onSettings
+                                ),
                                 SettingsItem(
                                     "Help Center",
                                     Icons.AutoMirrored.Outlined.Help,

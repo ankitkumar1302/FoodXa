@@ -70,7 +70,8 @@ import coil.compose.AsyncImage
 @Composable
 fun FoodXaHomeScreen(
     onNavigateToPopularFood: () -> Unit = {},
-    onNavigateToMyCard: () -> Unit = {}
+    onNavigateToMyCard: () -> Unit = {},
+    onNotifications: () -> Unit = {}
 ) {
     var searchQuery by remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
@@ -229,7 +230,7 @@ fun FoodXaHomeScreen(
                             )
                         }
                         IconButton(
-                            onClick = { },
+                            onClick = onNotifications,
                             modifier = Modifier
                                 .size(40.dp)
                                 .clip(CircleShape)

@@ -44,10 +44,14 @@ import com.ankit.foodxa.ui.theme.FoodXaHomeScreen
 import com.ankit.foodxa.ui.theme.FoodXaLoginScreen
 import com.ankit.foodxa.ui.theme.FoodXaSignUpScreenFunctional
 import com.ankit.foodxa.ui.theme.FoodXaTheme
-import com.ankit.foodxa.ui.theme.LoginScreen
+import com.ankit.foodxa.ui.theme.HelpSupportScreen
 import com.ankit.foodxa.ui.theme.MyCardScreen
+import com.ankit.foodxa.ui.theme.NotificationsScreen
+import com.ankit.foodxa.ui.theme.OrderTrackingScreen
 import com.ankit.foodxa.ui.theme.PopularFoodScreen
 import com.ankit.foodxa.ui.theme.ProfileScreen
+import com.ankit.foodxa.ui.theme.RestaurantDetailsScreen
+import com.ankit.foodxa.ui.theme.SettingsScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,14 +68,17 @@ class MainActivity : ComponentActivity() {
                     var currentScreen by remember { mutableStateOf("auth") }
                     var showLogin by remember { mutableStateOf(false) }
                     var selectedTab by remember { mutableIntStateOf(0) }
+                    var currentSubScreen by remember { mutableStateOf<String?>(null) }
 
                     // Handle back press
                     BackHandler(enabled = true) {
                         when {
+                            currentSubScreen != null -> {
+                                currentSubScreen = null // Return to main tab
+                            }
                             currentScreen == "main" && selectedTab != 0 -> {
                                 selectedTab = 0 // Return to home screen
                             }
-
                             currentScreen == "main" && selectedTab == 0 -> {
                                 finish() // Exit app if on home screen
                             }
@@ -82,11 +89,10 @@ class MainActivity : ComponentActivity() {
                         when (currentScreen) {
                             "auth" -> {
                                 if (showLogin) {
-                                    LoginScreen()
-//                                    FoodXaLoginScreen(
-//                                        onSignUpClick = { showLogin = false },
-//                                        onLoginSuccess = { currentScreen = "main" }
-//                                    )
+                                    FoodXaLoginScreen(
+                                        onSignUpClick = { showLogin = false },
+                                        onLoginSuccess = { currentScreen = "main" }
+                                    )
                                 } else {
                                     FoodXaSignUpScreenFunctional(
                                         onLoginClick = { showLogin = true },
@@ -116,34 +122,73 @@ class MainActivity : ComponentActivity() {
                                     Box(
                                         modifier = Modifier.fillMaxSize()
                                     ) {
-                                        when (selectedTab) {
-                                            0 -> FoodXaHomeScreen(
-                                                onNavigateToPopularFood = { selectedTab = 1 },
-                                                onNavigateToMyCard = { selectedTab = 2 }
-                                            )
+                                        when {
+                                            currentSubScreen != null -> {
+                                                when (currentSubScreen) {
+                                                    "order_tracking" -> OrderTrackingScreen(
+                                                        onNavigateBack = { currentSubScreen = null },
+                                                        onContactSupport = { currentSubScreen = "help_support" }
+                                                    )
+                                                    "restaurant_details" -> RestaurantDetailsScreen(
+                                                        onNavigateBack = { currentSubScreen = null },
+                                                        onAddToCart = { selectedTab = 2 },
+                                                        onViewMenu = { }
+                                                    )
+                                                    "notifications" -> NotificationsScreen(
+                                                        onNavigateBack = { currentSubScreen = null },
+                                                        onNotificationClick = { }
+                                                    )
+                                                    "settings" -> SettingsScreen(
+                                                        onNavigateBack = { currentSubScreen = null },
+                                                        onLogout = { currentScreen = "auth" },
+                                                        onEditProfile = { },
+                                                        onPrivacyPolicy = { },
+                                                        onTermsOfService = { },
+                                                        onHelpSupport = { currentSubScreen = "help_support" },
+                                                        onAbout = { }
+                                                    )
+                                                    "help_support" -> HelpSupportScreen(
+                                                        onNavigateBack = { currentSubScreen = null },
+                                                        onContactSupport = { },
+                                                        onFAQItemClick = { }
+                                                    )
+                                                }
+                                            }
+                                            else -> {
+                                                when (selectedTab) {
+                                                    0 -> FoodXaHomeScreen(
+                                                        onNavigateToPopularFood = { selectedTab = 1 },
+                                                        onNavigateToMyCard = { selectedTab = 2 },
+                                                        onNotifications = { currentSubScreen = "notifications" }
+                                                    )
 
-                                            1 -> PopularFoodScreen(
-                                                onNavigateBack = { selectedTab = 0 }
-                                            )
+                                                    1 -> PopularFoodScreen(
+                                                        onNavigateBack = { selectedTab = 0 }
+                                                    )
 
-                                            2 -> CartScreen(
-                                                onNavigateBack = { selectedTab = 0 },
-                                                onCheckout = { selectedTab = 3 }
-                                            )
+                                                    2 -> CartScreen(
+                                                        onNavigateBack = { selectedTab = 0 },
+                                                        onCheckout = { selectedTab = 3 }
+                                                    )
 
-                                            3 -> MyCardScreen(
-                                                onNavigateBack = { selectedTab = 2 },
-                                                onViewAllTransactions = { selectedTab = 4 }
-                                            )
+                                                    3 -> MyCardScreen(
+                                                        onNavigateBack = { selectedTab = 2 },
+                                                        onViewAllTransactions = { selectedTab = 4 }
+                                                    )
 
-                                            4 -> AllTransactionsScreen(
-                                                onNavigateBack = { selectedTab = 3 }
-                                            )
+                                                    4 -> AllTransactionsScreen(
+                                                        onNavigateBack = { selectedTab = 3 }
+                                                    )
 
-                                            5 -> ProfileScreen(
-                                                onNavigateBack = { selectedTab = 0 },
-                                                onLogout = { currentScreen = "auth" }
-                                            )
+                                                    5 -> ProfileScreen(
+                                                        onNavigateBack = { selectedTab = 0 },
+                                                        onLogout = { currentScreen = "auth" },
+                                                        onNotifications = { currentSubScreen = "notifications" },
+                                                        onSettings = { currentSubScreen = "settings" },
+                                                        onOrderTracking = { currentSubScreen = "order_tracking" }
+                                                    )
+                                                }
+                                            }
                                         }
                                     }
 

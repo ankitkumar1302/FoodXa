@@ -2,6 +2,7 @@ package com.ankit.foodxa.ui.theme
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -199,10 +200,10 @@ fun HelpSupportScreen(
                                     onClick = { },
                                     modifier = Modifier.weight(1f),
                                     shape = RoundedCornerShape(12.dp),
-                                    colors = OutlinedButtonDefaults.colors(
+                                    border = BorderStroke(1.dp, Color(0xFFF97316)),
+                                    colors = ButtonDefaults.outlinedButtonColors(
                                         containerColor = Color.Transparent,
-                                        contentColor = Color(0xFFF97316),
-                                        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFF97316))
+                                        contentColor = Color(0xFFF97316)
                                     )
                                 ) {
                                     Icon(

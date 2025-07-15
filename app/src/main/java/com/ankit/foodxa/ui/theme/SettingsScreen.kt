@@ -1,18 +1,57 @@
 package com.ankit.foodxa.ui.theme
 
-import androidx.compose.animation.*
-import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Help
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Payment
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PrivacyTip
+import androidx.compose.material.icons.filled.Save
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,21 +81,21 @@ fun SettingsScreen(
         SettingsSection(
             title = "Account",
             items = listOf(
-                SettingsItem(
+                SettingsOption(
                     title = "Edit Profile",
                     subtitle = "Update your personal information",
                     icon = Icons.Default.Person,
                     type = SettingsItemType.NAVIGATION,
                     onClick = onEditProfile
                 ),
-                SettingsItem(
+                SettingsOption(
                     title = "Payment Methods",
                     subtitle = "Manage your payment options",
                     icon = Icons.Default.Payment,
                     type = SettingsItemType.NAVIGATION,
                     onClick = { }
                 ),
-                SettingsItem(
+                SettingsOption(
                     title = "Addresses",
                     subtitle = "Manage your delivery addresses",
                     icon = Icons.Default.LocationOn,
@@ -68,7 +107,7 @@ fun SettingsScreen(
         SettingsSection(
             title = "Preferences",
             items = listOf(
-                SettingsItem(
+                SettingsOption(
                     title = "Push Notifications",
                     subtitle = "Receive order updates and offers",
                     icon = Icons.Default.Notifications,
@@ -76,7 +115,7 @@ fun SettingsScreen(
                     switchValue = pushNotifications,
                     onSwitchChange = { pushNotifications = it }
                 ),
-                SettingsItem(
+                SettingsOption(
                     title = "Email Notifications",
                     subtitle = "Get updates via email",
                     icon = Icons.Default.Email,
@@ -84,7 +123,7 @@ fun SettingsScreen(
                     switchValue = emailNotifications,
                     onSwitchChange = { emailNotifications = it }
                 ),
-                SettingsItem(
+                SettingsOption(
                     title = "Dark Mode",
                     subtitle = "Use dark theme",
                     icon = Icons.Default.DarkMode,
@@ -92,7 +131,7 @@ fun SettingsScreen(
                     switchValue = darkMode,
                     onSwitchChange = { darkMode = it }
                 ),
-                SettingsItem(
+                SettingsOption(
                     title = "Location Services",
                     subtitle = "Allow location access for better delivery",
                     icon = Icons.Default.LocationOn,
@@ -100,7 +139,7 @@ fun SettingsScreen(
                     switchValue = locationServices,
                     onSwitchChange = { locationServices = it }
                 ),
-                SettingsItem(
+                SettingsOption(
                     title = "Auto Save",
                     subtitle = "Automatically save your preferences",
                     icon = Icons.Default.Save,
@@ -113,28 +152,28 @@ fun SettingsScreen(
         SettingsSection(
             title = "Support",
             items = listOf(
-                SettingsItem(
+                SettingsOption(
                     title = "Help & Support",
                     subtitle = "Get help with your orders",
                     icon = Icons.Default.Help,
                     type = SettingsItemType.NAVIGATION,
                     onClick = onHelpSupport
                 ),
-                SettingsItem(
+                SettingsOption(
                     title = "Privacy Policy",
                     subtitle = "Read our privacy policy",
                     icon = Icons.Default.PrivacyTip,
                     type = SettingsItemType.NAVIGATION,
                     onClick = onPrivacyPolicy
                 ),
-                SettingsItem(
+                SettingsOption(
                     title = "Terms of Service",
                     subtitle = "Read our terms of service",
                     icon = Icons.Default.Description,
                     type = SettingsItemType.NAVIGATION,
                     onClick = onTermsOfService
                 ),
-                SettingsItem(
+                SettingsOption(
                     title = "About",
                     subtitle = "App version and information",
                     icon = Icons.Default.Info,
@@ -220,9 +259,9 @@ fun SettingsScreen(
                                     modifier = Modifier.size(30.dp)
                                 )
                             }
-                            
+
                             Spacer(modifier = Modifier.width(16.dp))
-                            
+
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = "Dwayne Johnson",
@@ -236,7 +275,7 @@ fun SettingsScreen(
                                     fontSize = 14.sp
                                 )
                             }
-                            
+
                             IconButton(onClick = onEditProfile) {
                                 Icon(
                                     Icons.Default.Edit,
@@ -313,7 +352,7 @@ fun SettingsSectionCard(section: SettingsSection) {
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 12.dp)
             )
-            
+
             section.items.forEachIndexed { index, item ->
                 SettingsItemRow(
                     item = item,
@@ -329,7 +368,7 @@ fun SettingsSectionCard(section: SettingsSection) {
 
 @Composable
 fun SettingsItemRow(
-    item: SettingsItem,
+    item: SettingsOption,
     isLast: Boolean
 ) {
     Row(
@@ -342,9 +381,9 @@ fun SettingsItemRow(
             tint = Color(0xFFF97316),
             modifier = Modifier.size(24.dp)
         )
-        
+
         Spacer(modifier = Modifier.width(16.dp))
-        
+
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = item.title,
@@ -358,7 +397,7 @@ fun SettingsItemRow(
                 fontSize = 14.sp
             )
         }
-        
+
         when (item.type) {
             SettingsItemType.SWITCH -> {
                 Switch(
@@ -372,8 +411,9 @@ fun SettingsItemRow(
                     )
                 )
             }
+
             SettingsItemType.NAVIGATION -> {
-                IconButton(onClick = item.onClick) {
+                IconButton(onClick = item.onClick ?: {}) {
                     Icon(
                         Icons.Default.ChevronRight,
                         contentDescription = "Navigate",
@@ -392,10 +432,10 @@ enum class SettingsItemType {
 
 data class SettingsSection(
     val title: String,
-    val items: List<SettingsItem>
+    val items: List<SettingsOption>
 )
 
-data class SettingsItem(
+data class SettingsOption(
     val title: String,
     val subtitle: String,
     val icon: androidx.compose.ui.graphics.vector.ImageVector,

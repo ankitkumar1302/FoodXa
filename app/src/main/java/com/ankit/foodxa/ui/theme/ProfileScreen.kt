@@ -174,25 +174,25 @@ fun ProfileScreen(
 
                     // Account Settings Section
                     item {
-                        SettingsSection(
+                        ProfileSettingsSection(
                             title = "Account Settings",
                             items = listOf(
-                                SettingsItem(
+                                ProfileSettingsItem(
                                     "Personal Information",
                                     Icons.Outlined.Person,
                                     onClick = { /* Navigate to personal info */ }
                                 ),
-                                SettingsItem(
+                                ProfileSettingsItem(
                                     "Payment Methods",
                                     Icons.Outlined.CreditCard,
                                     onClick = { /* Navigate to payment methods */ }
                                 ),
-                                SettingsItem(
+                                ProfileSettingsItem(
                                     "Addresses",
                                     Icons.Outlined.LocationOn,
                                     onClick = { /* Navigate to addresses */ }
                                 ),
-                                SettingsItem(
+                                ProfileSettingsItem(
                                     "Notifications",
                                     Icons.Outlined.Notifications,
                                     onClick = onNotifications
@@ -206,18 +206,18 @@ fun ProfileScreen(
                         SettingsSection(
                             title = "Preferences",
                             items = listOf(
-                                SettingsItem(
+                                ProfileSettingsItem(
                                     "Language",
                                     Icons.Outlined.Language,
                                     subtitle = "English",
                                     onClick = { /* Open language selector */ }
                                 ),
-                                SettingsItem(
+                                ProfileSettingsItem(
                                     "Dark Mode",
                                     Icons.Outlined.DarkMode,
                                     onClick = { /* Toggle dark mode */ }
                                 ),
-                                SettingsItem(
+                                ProfileSettingsItem(
                                     "Currency",
                                     Icons.Outlined.AttachMoney,
                                     subtitle = "USD",
@@ -232,27 +232,27 @@ fun ProfileScreen(
                         SettingsSection(
                             title = "Support",
                             items = listOf(
-                                SettingsItem(
+                                ProfileSettingsItem(
                                     "Order Tracking",
                                     Icons.Outlined.LocationOn,
                                     onClick = onOrderTracking
                                 ),
-                                SettingsItem(
+                                ProfileSettingsItem(
                                     "Settings",
                                     Icons.Outlined.Person,
                                     onClick = onSettings
                                 ),
-                                SettingsItem(
+                                ProfileSettingsItem(
                                     "Help Center",
                                     Icons.AutoMirrored.Outlined.Help,
                                     onClick = { /* Open help center */ }
                                 ),
-                                SettingsItem(
+                                ProfileSettingsItem(
                                     "Privacy Policy",
                                     Icons.Outlined.PrivacyTip,
                                     onClick = { /* Open privacy policy */ }
                                 ),
-                                SettingsItem(
+                                ProfileSettingsItem(
                                     "Terms of Service",
                                     Icons.Outlined.Description,
                                     onClick = { /* Open terms */ }
@@ -416,9 +416,9 @@ private fun InfoChip(
 }
 
 @Composable
-private fun SettingsSection(
+private fun ProfileSettingsSection(
     title: String,
-    items: List<SettingsItem>
+    items: List<ProfileSettingsItem>
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -447,7 +447,7 @@ private fun SettingsSection(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 items.forEachIndexed { index, item ->
-                    SettingsItemRow(
+                    ProfileSettingsItemRow(
                         item = item,
                         showDivider = index < items.size - 1
                     )
@@ -458,8 +458,50 @@ private fun SettingsSection(
 }
 
 @Composable
-private fun SettingsItemRow(
-    item: SettingsItem,
+private fun SettingsSection(
+    title: String,
+    items: List<ProfileSettingsItem>
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = title,
+            color = Color.Gray,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.padding(vertical = 8.dp)
+        )
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .shadow(
+                    elevation = 4.dp,
+                    shape = RoundedCornerShape(16.dp),
+                    spotColor = Color(0xFFF97316).copy(alpha = 0.1f)
+                ),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color(0xFF2A2A2A)
+            )
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                items.forEachIndexed { index, item ->
+                    ProfileSettingsItemRow(
+                        item = item,
+                        showDivider = index < items.size - 1
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ProfileSettingsItemRow(
+    item: ProfileSettingsItem,
     showDivider: Boolean
 ) {
     Column {
@@ -515,9 +557,9 @@ data class UserProfile(
     val address: String
 )
 
-data class SettingsItem(
+data class ProfileSettingsItem(
     val title: String,
     val icon: ImageVector,
     val subtitle: String? = null,
     val onClick: () -> Unit
-) 
+)

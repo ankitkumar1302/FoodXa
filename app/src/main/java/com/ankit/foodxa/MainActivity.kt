@@ -44,6 +44,7 @@ import com.ankit.foodxa.ui.theme.FoodXaHomeScreen
 import com.ankit.foodxa.ui.theme.FoodXaLoginScreen
 import com.ankit.foodxa.ui.theme.FoodXaSignUpScreenFunctional
 import com.ankit.foodxa.ui.theme.FoodXaTheme
+import com.ankit.foodxa.ui.theme.LoginScreen
 import com.ankit.foodxa.ui.theme.MyCardScreen
 import com.ankit.foodxa.ui.theme.PopularFoodScreen
 import com.ankit.foodxa.ui.theme.ProfileScreen
@@ -81,10 +82,11 @@ class MainActivity : ComponentActivity() {
                         when (currentScreen) {
                             "auth" -> {
                                 if (showLogin) {
-                                    FoodXaLoginScreen(
-                                        onSignUpClick = { showLogin = false },
-                                        onLoginSuccess = { currentScreen = "main" }
-                                    )
+                                    LoginScreen()
+//                                    FoodXaLoginScreen(
+//                                        onSignUpClick = { showLogin = false },
+//                                        onLoginSuccess = { currentScreen = "main" }
+//                                    )
                                 } else {
                                     FoodXaSignUpScreenFunctional(
                                         onLoginClick = { showLogin = true },

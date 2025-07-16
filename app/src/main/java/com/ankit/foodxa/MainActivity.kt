@@ -131,7 +131,10 @@ class MainActivity : ComponentActivity() {
                                                     )
                                                     "restaurant_details" -> RestaurantDetailsScreen(
                                                         onNavigateBack = { currentSubScreen = null },
-                                                        onAddToCart = { selectedTab = 2 },
+                                                        onAddToCart = { 
+                                                            selectedTab = 2
+                                                            currentSubScreen = null
+                                                        },
                                                         onViewMenu = { }
                                                     )
                                                     "notifications" -> NotificationsScreen(
@@ -152,6 +155,10 @@ class MainActivity : ComponentActivity() {
                                                         onContactSupport = { },
                                                         onFAQItemClick = { }
                                                     )
+                                                    else -> {
+                                                        // Handle unrecognized sub-screen by returning to main tab
+                                                        currentSubScreen = null
+                                                    }
                                                 }
                                             }
                                             else -> {
